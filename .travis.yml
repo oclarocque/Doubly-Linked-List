@@ -1,0 +1,7 @@
+language: c
+
+install:
+  - gem install ceedling
+
+script:
+  - mkdir test/support && ceedling test:all
