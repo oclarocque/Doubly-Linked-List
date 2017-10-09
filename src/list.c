@@ -48,7 +48,7 @@ list_t *list_create(void)
 void list_destroy(list_t *l)
 {
     while (l->size) {
-        remove_element(l, l->head);
+        remove_element(l, l->tail);
     }
     free(l);
 }
@@ -64,7 +64,7 @@ void list_print(list_t *l)
     int pos = 0;
 
     while (e != NULL) {
-        printf("%d: %d\n", pos++, e->val);
+        printf("Element %d has value %d\n", pos++, e->val);
         e = e->next;
     }
 }
@@ -78,17 +78,17 @@ void list_print(list_t *l)
 int list_find(list_t *l, int val)
 {
     element_t *e = l->head;
-    int pos = -1;
+    int pos = 0;
 
     while (e != NULL) {
         if (e->val == val) {
-            break;
+            return pos;
         }
         e = e->next;
         pos++;
     }
 
-    return pos;
+    return (-1);
 }
 
 /*
@@ -102,22 +102,21 @@ void list_add_last(list_t *l, int val)
     element_t *new_tail = (element_t *)malloc(sizeof(element_t));
     element_t *old_tail = l->tail;
 
-    new_tail->val = val;
+    new_tail->val  = val;
     new_tail->next = NULL;
     new_tail->prev = old_tail;
 
     if (old_tail != NULL) {
         old_tail->next = new_tail;
-        old_tail->prev = NULL;
     }
 
     l->tail = new_tail;
 
+    l->size++;
+
     if (l->size == 1) {
         l->head = l->tail;
     }
-
-    l->size++;
 }
 
 /*
@@ -136,17 +135,16 @@ void list_add_first(list_t *l, int val)
     new_head->prev = NULL;
 
     if (old_head != NULL) {
-        old_head->next = NULL;
         old_head->prev = new_head;
     }
 
     l->head = new_head;
 
+    l->size++;
+
     if (l->size == 1) {
         l->tail = l->head;
     }
-
-    l->size++;
 }
 
 /*
@@ -223,7 +221,10 @@ list_t *list_merge(list_t *l1, list_t *l2)
 */
 static void remove_element(list_t *l, element_t *e)
 {
-    if (e == l->head) {
+    if (l->size == 1) {
+        l->head = NULL;
+        l->tail = NULL;
+    } else if (e == l->head) {
         l->head = e->next;
         l->head->prev = NULL;
     } else if (e == l->tail) {
