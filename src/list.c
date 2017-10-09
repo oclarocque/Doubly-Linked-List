@@ -50,6 +50,7 @@ void list_destroy(list_t *l)
     while (l->size) {
         remove_element(l, l->tail);
     }
+
     free(l);
 }
 
@@ -285,9 +286,9 @@ list_t *list_sort(list_t *l)
 
 
 /*
-** list_merge(): merge two lists
-** in  <- l1: fisrt list
-**     <- l2: second list
+** list_merge(): merge two ordered lists
+** in  <- left:  first ordered list
+**     <- right: second ordered list
 ** out -> combined list
 */
 list_t *list_merge(list_t *left, list_t *right)
