@@ -65,6 +65,50 @@ void test_list_create(void)
     TEST_ASSERT_NULL(l->tail);
 }
 
+void test_list_is_empty(void)
+{
+    l = list_create();
+
+    TEST_ASSERT_TRUE(list_is_empty(l));
+    TEST_ASSERT_FALSE(list_is_not_empty(l));
+}
+
+void test_list_is_not_empty(void)
+{
+    l = list_create();
+
+    list_add_first(l, 50);
+
+    TEST_ASSERT_TRUE(list_is_not_empty(l));
+    TEST_ASSERT_FALSE(list_is_empty(l));
+}
+
+void test_list_first(void)
+{
+    int val;
+
+    l = list_create();
+
+    list_add_first(l, 50);
+
+    val = list_first(l);
+
+    TEST_ASSERT_EQUAL_INT(50, val);
+}
+
+void test_list_last(void)
+{
+    int val;
+
+    l = list_create();
+
+    list_add_last(l, 100);
+
+    val = list_last(l);
+
+    TEST_ASSERT_EQUAL_INT(100, val);
+}
+
 void test_list_add_first(void)
 {
     l = list_create();
@@ -137,6 +181,19 @@ void test_list_find(void)
     pos = list_find(l, 5);
 
     TEST_ASSERT_EQUAL_INT(5, pos);
+}
+
+void test_list_find_pos(void)
+{
+    l = list_create();
+    int i = 0;
+    int val = 0;
+
+    fill(l, FILL_COUNT);
+
+    val = list_find_pos(l, 5);
+
+    TEST_ASSERT_EQUAL_INT(5, val);
 }
 
 void test_list_print(void)
@@ -236,3 +293,50 @@ void test_remove_pos_last(void)
     TEST_ASSERT_EQUAL_INT(-1, pos);
 }
 
+void test_list_sort(void)
+{
+    l = list_create();
+
+    list_add_last(l, 6);
+    list_add_last(l, 3);
+    list_add_last(l, 0);
+    list_add_last(l, 1);
+    list_add_last(l, 2);
+    list_add_last(l, 5);
+    list_add_last(l, 4);
+
+    l = list_sort(l);
+
+    TEST_ASSERT_EQUAL_INT(0, list_find_pos(l, 0));
+    TEST_ASSERT_EQUAL_INT(1, list_find_pos(l, 1));
+    TEST_ASSERT_EQUAL_INT(2, list_find_pos(l, 2));
+    TEST_ASSERT_EQUAL_INT(3, list_find_pos(l, 3));
+    TEST_ASSERT_EQUAL_INT(4, list_find_pos(l, 4));
+    TEST_ASSERT_EQUAL_INT(5, list_find_pos(l, 5));
+    TEST_ASSERT_EQUAL_INT(6, list_find_pos(l, 6));
+}
+
+void test_list_merge(void)
+{
+    list_t *left  = list_create();
+    list_t *right = list_create();
+
+    list_add_last(left,  0);
+    list_add_last(left,  1);
+    list_add_last(left,  2);
+
+    list_add_last(right, 3);
+    list_add_last(right, 4);
+    list_add_last(right, 5);
+    list_add_last(right, 6);
+
+    l = list_merge(left, right);
+
+    TEST_ASSERT_EQUAL_INT(0, list_find_pos(l, 0));
+    TEST_ASSERT_EQUAL_INT(1, list_find_pos(l, 1));
+    TEST_ASSERT_EQUAL_INT(2, list_find_pos(l, 2));
+    TEST_ASSERT_EQUAL_INT(3, list_find_pos(l, 3));
+    TEST_ASSERT_EQUAL_INT(4, list_find_pos(l, 4));
+    TEST_ASSERT_EQUAL_INT(5, list_find_pos(l, 5));
+    TEST_ASSERT_EQUAL_INT(6, list_find_pos(l, 6));
+}

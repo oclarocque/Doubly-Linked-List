@@ -70,6 +70,46 @@ void list_print(list_t *l)
 }
 
 /*
+** list_is_empty(): check if the list is empty
+** in  <- l: list
+** out -> true if empty, false otherwise
+*/
+bool list_is_empty(list_t *l)
+{
+    return !l->size;
+}
+
+/*
+** list_is_not_empty(): check if the list is not empty
+** in  <- l: list
+** out -> true if not empty, false otherwise
+*/
+bool list_is_not_empty(list_t *l)
+{
+    return !!l->size;
+}
+
+/*
+** list_first(): return the first element value
+** in  <- l: list
+** out -> value
+*/
+int list_first(list_t* l)
+{
+    return l->head->val;
+}
+
+/*
+** list_last(): return the last element value
+** in  <- l: list
+** out -> value
+*/
+int list_last(list_t* l)
+{
+    return l->tail->val;
+}
+
+/*
 ** list_find(): find an element in the list
 ** in  <- l:   list
 **     <- val: value of the element to find
@@ -86,6 +126,28 @@ int list_find(list_t *l, int val)
         }
         e = e->next;
         pos++;
+    }
+
+    return (-1);
+}
+
+/*
+** list_find_pos(): find an element in the list
+** in  <- l:   list
+**     <- pos: position of the element to find
+** out -> value of the element
+*/
+int list_find_pos(list_t *l, int pos)
+{
+    element_t *e = l->head;
+    int i = 0;
+
+    while (e != NULL) {
+        if (i == pos) {
+            return e->val;
+        }
+        e = e->next;
+        i++;
     }
 
     return (-1);
@@ -192,10 +254,35 @@ void list_remove_pos(list_t *l, int pos)
 ** in  <- l: list
 ** out -> none
 */
-void list_sort(list_t *l)
+list_t *list_sort(list_t *l)
 {
+    list_t *left;
+    list_t *right;
+    int val;
+    int i;
 
+    if (l->size <= 1) {
+        return l;
+    }
+
+    left  = list_create();
+    right = list_create();
+
+    for (i = 0; i < l->size; i++) {
+        val = list_find_pos(l, i);
+        if (i < (l->size / 2)) {
+            list_add_last(left, val);
+        } else {
+            list_add_last(right, val);
+        }
+    }
+
+    left  = list_sort(left);
+    right = list_sort(right);
+
+    return list_merge(left, right);
 }
+
 
 /*
 ** list_merge(): merge two lists
@@ -203,9 +290,30 @@ void list_sort(list_t *l)
 **     <- l2: second list
 ** out -> combined list
 */
-list_t *list_merge(list_t *l1, list_t *l2)
+list_t *list_merge(list_t *left, list_t *right)
 {
-    return l1;
+    list_t *result = list_create();
+
+    while ((list_is_not_empty(left)) && (list_is_not_empty(right))) {
+        if (list_first(left) <= list_first(right)) {
+            list_add_last(result, list_first(left));
+            list_remove_pos(left, 0);
+        } else {
+            list_add_last(result, list_first(right));
+            list_remove_pos(right, 0);
+        }
+    }
+
+    while (list_is_not_empty(left)) {
+        list_add_last(result, list_first(left));
+        list_remove_pos(left, 0);
+    }
+    while (list_is_not_empty(right)) {
+        list_add_last(result, list_first(right));
+        list_remove_pos(right, 0);
+    }
+
+    return result;
 }
 
 
