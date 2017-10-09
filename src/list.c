@@ -21,7 +21,7 @@ static void remove_element(list_t *l, element_t *e);
 
 
 /*
-** Function Defintions
+** Function Definitions
 */
 
 /*
@@ -214,7 +214,7 @@ list_t *list_merge(list_t *l1, list_t *l2)
 */
 
 /*
-** remove(): remove an element from the list
+** remove_element(): remove an element from the list
 ** in  <- l: list
 **     <- e: element to remove
 ** out -> none
