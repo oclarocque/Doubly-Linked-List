@@ -39,6 +39,7 @@ typedef struct list {
 */
 list_t *list_create(void);
 void    list_destroy(list_t *l);
+void    list_clear(list_t *l);
 void    list_print(list_t *l);
 bool    list_is_empty(list_t *l);
 bool    list_is_not_empty(list_t *l);
@@ -50,8 +51,8 @@ void    list_add_last(list_t *l, int val);
 void    list_add_first(list_t *l, int val);
 void    list_remove(list_t *l, int val);
 void    list_remove_pos(list_t *l, int pos);
-list_t *list_sort(list_t *l);
-list_t *list_merge(list_t *l1, list_t *l2);
+void    list_sort(list_t *l);
+void    list_merge(list_t *left, list_t *right, list_t *result);
 
 
 #endif /* LIST_H_ */

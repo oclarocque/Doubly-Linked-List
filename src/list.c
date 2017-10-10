@@ -55,6 +55,18 @@ void list_destroy(list_t *l)
 }
 
 /*
+** list_clear(): free all list elements
+** in  <- l: list
+** out -> none
+*/
+void list_clear(list_t *l)
+{
+    while (l->size) {
+        remove_element(l, l->tail);
+    }
+}
+
+/*
 ** list_print(): print to stdout all elements of the list
 ** in  <- l: list
 ** out -> none
@@ -255,7 +267,7 @@ void list_remove_pos(list_t *l, int pos)
 ** in  <- l: list
 ** out -> none
 */
-list_t *list_sort(list_t *l)
+void list_sort(list_t *l)
 {
     list_t *left;
     list_t *right;
@@ -263,7 +275,7 @@ list_t *list_sort(list_t *l)
     int i;
 
     if (l->size <= 1) {
-        return l;
+        return;
     }
 
     left  = list_create();
@@ -278,22 +290,25 @@ list_t *list_sort(list_t *l)
         }
     }
 
-    left  = list_sort(left);
-    right = list_sort(right);
+    list_sort(left);
+    list_sort(right);
 
-    return list_merge(left, right);
+    list_merge(left, right, l);
+
+    list_destroy(left);
+    list_destroy(right);
 }
 
 
 /*
 ** list_merge(): merge two ordered lists
-** in  <- left:  first ordered list
-**     <- right: second ordered list
-** out -> combined list
+** in  <- left:   first ordered list
+**     <- right:  second ordered list
+** out -> result: merged list
 */
-list_t *list_merge(list_t *left, list_t *right)
+void list_merge(list_t *left, list_t *right, list_t *result)
 {
-    list_t *result = list_create();
+    list_clear(result);
 
     while ((list_is_not_empty(left)) && (list_is_not_empty(right))) {
         if (list_first(left) <= list_first(right)) {
@@ -313,8 +328,6 @@ list_t *list_merge(list_t *left, list_t *right)
         list_add_last(result, list_first(right));
         list_remove_pos(right, 0);
     }
-
-    return result;
 }
 
 
