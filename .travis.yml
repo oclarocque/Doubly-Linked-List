@@ -9,5 +9,5 @@ install:
   - gem install ceedling
 
 script:
-  - mkdir test/support
+  - mkdir test/support && mkdir build
   - ceedling test:all && valgrind --leak-check=full --error-exitcode=1 build/test/out/test_list.out > /dev/null
