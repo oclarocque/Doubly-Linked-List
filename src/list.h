@@ -22,7 +22,7 @@ extern "C" {
 ** Type Declarations
 */
 typedef struct element {
-    int val;
+    void *val;
     struct element *next;
     struct element *prev;
 } element_t;
@@ -45,11 +45,11 @@ bool    list_is_empty(list_t *l);
 bool    list_is_not_empty(list_t *l);
 int     list_first(list_t* l);
 int     list_last(list_t* l);
-int     list_find(list_t *l, int val);
+int     list_find(list_t *l, void *val);
 int     list_find_pos(list_t *l, int pos);
-void    list_add_last(list_t *l, int val);
-void    list_add_first(list_t *l, int val);
-void    list_remove(list_t *l, int val);
+void    list_add_last(list_t *l, void *val);
+void    list_add_first(list_t *l, void *val);
+void    list_remove(list_t *l, void *val);
 void    list_remove_pos(list_t *l, int pos);
 void    list_sort(list_t *l);
 void    list_merge(list_t *left, list_t *right, list_t *result);

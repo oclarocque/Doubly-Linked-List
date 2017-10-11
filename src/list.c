@@ -128,7 +128,7 @@ int list_last(list_t* l)
 **     <- val: value of the element to find
 ** out -> position of the element
 */
-int list_find(list_t *l, int val)
+int list_find(list_t *l, void *val)
 {
     element_t *e = l->head;
     int pos = 0;
@@ -172,7 +172,7 @@ int list_find_pos(list_t *l, int pos)
 **     <- val: value of the element to add
 ** out -> none
 */
-void list_add_last(list_t *l, int val)
+void list_add_last(list_t *l, void *val)
 {
     element_t *new_tail = (element_t *)malloc(sizeof(element_t));
     element_t *old_tail = l->tail;
@@ -200,7 +200,7 @@ void list_add_last(list_t *l, int val)
 **     <- val: value of the element to add
 ** out -> none
 */
-void list_add_first(list_t *l, int val)
+void list_add_first(list_t *l, void *val)
 {
     element_t *new_head = (element_t *)malloc(sizeof(element_t));
     element_t *old_head = l->head;
@@ -228,7 +228,7 @@ void list_add_first(list_t *l, int val)
 **     <- val: value of the element to remove
 ** out -> none
 */
-void list_remove(list_t *l, int val)
+void list_remove(list_t *l, void *val)
 {
     element_t *e = l->head;
 
